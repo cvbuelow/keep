@@ -28969,10 +28969,16 @@
 	
 	var _noteListController = __webpack_require__(23);
 	
-	var noteListModule = _angular2['default'].module('note-list', []).directive('noteList', function () {
+	var noteListModule = _angular2['default'].module('note-list', []).directive('noteList', function ($window) {
 	  return { template: _noteListHtml2['default'], controller: _noteListController.NoteListController,
 	    scope: {},
-	    controllerAs: 'ctrl'
+	    controllerAs: 'ctrl',
+	    link: function link(scope, ele, attr, ctrl) {
+	      window.addEventListener('scroll', function () {
+	        scope.$apply();
+	        ctrl.update();
+	      });
+	    }
 	  };
 	});
 	
@@ -29043,7 +29049,7 @@
 	    _classCallCheck(this, NoteListController);
 	
 	    this.Notes = Notes;
-	    this.notes = this.getAllNotes();
+	    this.getAllNotes();
 	  }
 	
 	  _createClass(NoteListController, [{
@@ -29054,7 +29060,18 @@
 	  }, {
 	    key: 'getAllNotes',
 	    value: function getAllNotes() {
-	      return this.Notes.getAllNotes();
+	      var _this = this;
+	
+	      return this.Notes.getAllNotes().then(function (notes) {
+	        _this.notes = notes;
+	      })['catch'](function (err) {
+	        return console.log(err);
+	      });
+	    }
+	  }, {
+	    key: 'update',
+	    value: function update() {
+	      console.log('update');
 	    }
 	  }]);
 	
@@ -29146,7 +29163,7 @@
 /* 27 */
 /***/ function(module, exports) {
 
-	module.exports = "<section class=\"note\">\n  {{ctrl.note.content}}\n</section>"
+	module.exports = "<section class=\"note\" style=\"background:{{ctrl.note.color}}\">\n  {{ctrl.note.content}}\n</section>"
 
 /***/ },
 /* 28 */
@@ -29207,10 +29224,17 @@
 	var _lodash2 = _interopRequireDefault(_lodash);
 	
 	var count = 0;
-	var Notes = function Notes() {
+	var Notes = function Notes($http) {
 	  var notes = [];
+	  var api = 'http://localhost:3000/notes';
 	
 	  var getAllNotes = function getAllNotes() {
+	    return $http.get(api).then(function (res) {
+	      return notes = res.data;
+	    });
+	  };
+	
+	  var getNotesState = function getNotesState() {
 	    return notes;
 	  };
 	
@@ -29223,7 +29247,7 @@
 	      var note = { content: content, id: ++count };
 	      notes.push(note);
 	    },
-	    getAllNotes: getAllNotes, getOneNote: getOneNote };
+	    getAllNotes: getAllNotes, getOneNote: getOneNote, getNotesState: getNotesState };
 	};
 	
 	exports.Notes = Notes;

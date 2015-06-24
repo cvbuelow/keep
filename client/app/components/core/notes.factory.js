@@ -1,9 +1,15 @@
 import _ from 'lodash';
 let count = 0;
-let Notes = () => {
-  const notes = [];
+let Notes = ($http) => {
+  let notes = [];
+  const api = 'http://localhost:3000/notes';
 
   let getAllNotes = () => {
+    return $http.get(api)
+      .then(res => notes = res.data);
+  };
+
+  let getNotesState = () => {
     return notes;
   };
 
@@ -16,7 +22,7 @@ let Notes = () => {
       let note = {content, id: ++count};
       notes.push(note);
     },
-    getAllNotes, getOneNote};
+    getAllNotes, getOneNote, getNotesState};
 };
 
 export {Notes};
