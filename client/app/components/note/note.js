@@ -5,7 +5,14 @@ import {NoteController as controller} from './note.controller';
 
 let noteModule = angular.module('note', [])
   .directive('note', function() {
-    return { template, controller };
+    return { template, controller,
+      scope: {
+        note: '='
+      },
+      controllerAs: 'ctrl',
+      bindToController: true,
+      restrict: 'E'
+    };
   });
 
 export {noteModule};

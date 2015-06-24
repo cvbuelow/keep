@@ -1,8 +1,12 @@
-class NoteMaker {
-  constructor($log) {
+class NoteMakerController {
+  constructor(Notes) {
+    this.Notes = Notes;
+  }
 
+  createNote(content) {
+    this.Notes.createNote(content);
   }
 }
-NoteMaker.$inject = ['$log'];
+NoteMakerController.$inject = ['Notes'];
 
-export {NoteMaker};
+export {NoteMakerController};

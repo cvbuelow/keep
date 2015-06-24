@@ -5,7 +5,10 @@ import {NoteMakerController as controller} from './note-maker.controller';
 
 let noteMakerModule = angular.module('note-maker', [])
   .directive('noteMaker', function() {
-    return { template, controller };
+    return { template, controller,
+      controllerAs: 'ctrl',
+      scope: {}
+    };
   });
 
 export {noteMakerModule};

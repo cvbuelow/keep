@@ -18,3 +18,5 @@ let Notes = () => {
     },
     getAllNotes, getOneNote};
 };
+
+export {Notes};

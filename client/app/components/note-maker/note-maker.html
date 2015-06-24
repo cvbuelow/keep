@@ -1,3 +1,6 @@
 <section class="note-maker">
-  <input type="text">
+  <form ng-submit="ctrl.createNote(ctrl.content)" novalidate>
+    <input type="text" ng-model="ctrl.content">
+    <button>Add</button>
+  </form>
 </section>
